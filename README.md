@@ -37,7 +37,7 @@ made by meeeee :333333 [@UltiMultiGamer](https://github.com/UltiMultiGamer)
 
 ---
 
-## 📜 Commands 
+## Commands 
 
 | Command | Description | Example |
 |---------|-------------|---------|
