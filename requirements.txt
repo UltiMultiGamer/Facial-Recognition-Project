@@ -10,3 +10,5 @@ scikit-learn>=1.0
 umap-learn>=0.5
 tensorflow>=2.5 
 matplotlib>=3.3
+tf-keras>=2.5
+

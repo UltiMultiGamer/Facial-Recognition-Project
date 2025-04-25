@@ -8,7 +8,7 @@ made by meeeee :333333 [@UltiMultiGamer](https://github.com/UltiMultiGamer)
 
 ---
 
-
+# Setup
 
 
 1. Make a venv:
@@ -38,7 +38,7 @@ made by meeeee :333333 [@UltiMultiGamer](https://github.com/UltiMultiGamer)
 
 ---
 
-
+# Commands
 
 | Command       | Description                                                               | Example Usage                                                                 |
 | :------------ | :------------------------------------------------------------------------ | :---------------------------------------------------------------------------- |
@@ -61,3 +61,21 @@ made by meeeee :333333 [@UltiMultiGamer](https://github.com/UltiMultiGamer)
 *   `--show-boxes`: (For `recognize`) Display the image/webcam feed with bounding boxes overlaid on detected/recognized faces.
 *   `--ids <id1> [<id2>...]`: One or more space-separated embedding IDs (for `remove-id`).
 *   `--reduction <tsne|umap>`: The dimensionality reduction algorithm for visualization (default: `tsne`).
+
+
+# Config
+
+> in face.server.py
+
+DEFAULT_MODEL = "Facenet512" <br> <b>Self-explainatory, use models from list</b>
+<br>
+DETECTOR_BACKEND = 'mtcnn'<br>
+<b>Self-explainatory</b>
+<br>
+MIN_FACE_AREA_PX = 200*200<br>
+<b>Minimum face size area</b>
+
+
+> in face_client.py
+
+
