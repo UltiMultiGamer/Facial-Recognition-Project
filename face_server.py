@@ -1084,6 +1084,7 @@ def handle_report():
 
     
     try:
+        html_report_path = os.path.join(REPORT_GENERATION_DIR, f"performance_report_{int(time.time())}.html")
         with open(html_report_path, 'w', encoding='utf-8') as f:
             f.write("\n".join(html_content))
         log.info(f"HTML report generated: {html_report_path}")

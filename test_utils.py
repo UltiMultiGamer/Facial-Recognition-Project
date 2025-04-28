@@ -113,7 +113,6 @@ import pandas as pd
 
 def create_performance_visualization(metrics_df, output_path):
 
-    
     if metrics_df.empty:
         print("Warning: No data provided for performance visualization.")
         plt.figure(figsize=(12, 8))
@@ -126,81 +125,58 @@ def create_performance_visualization(metrics_df, output_path):
         plt.close()
         return output_path
 
-    
-    
-    if len(metrics_df) > 1:
-        plot_df = metrics_df.iloc[1:].copy() 
-                                             
-        print(f"Note: Excluding the first event (index {metrics_df.index[0]}) from visualization.")
-    elif len(metrics_df) == 1:
-        
-        print("Warning: Only one data point provided. Excluding it results in no data for visualization.")
-        plot_df = pd.DataFrame(columns=metrics_df.columns) 
-    else:
-        
-        plot_df = metrics_df 
+    plot_df = metrics_df.copy()
 
-    
     if plot_df.empty:
-        print("Warning: No data left for performance visualization after excluding the first event.")
+        print("Warning: No data left for performance visualization.")
         plt.figure(figsize=(12, 8))
-        plt.text(0.5, 0.5, 'Нет данных для отчета о производительности\n(после исключения первого события).',
+        plt.text(0.5, 0.5, 'Нет данных для отчета о производительности.',
                  horizontalalignment='center', verticalalignment='center',
                  fontsize=14, color='red')
-        plt.title('Отчет о производительности (Нет данных после исключения)')
+        plt.title('Отчет о производительности (Нет данных)')
         plt.axis('off')
         plt.savefig(output_path)
         plt.close()
         return output_path
 
-    
     plt.figure(figsize=(12, 10))
 
-    
     plt.subplot(2, 1, 1)
-    
     bars_time = plt.bar(plot_df.index, plot_df['recognition_time'], color='skyblue')
-    plt.title('Время распознавания на событие (секунды) - Исключая первое событие')
+    plt.title('Время распознавания на событие (секунды)')
     plt.ylabel('Время (с)')
-    
-    plt.xticks(ticks=plot_df.index, labels=plot_df['event_id'], rotation=75, ha='right', fontsize=8)
+    x_labels = plot_df['image']
+    plt.xticks(ticks=plot_df.index, labels=x_labels, rotation=75, ha='right', fontsize=8)
     plt.grid(axis='y', linestyle='--', alpha=0.7)
 
     for bar in bars_time:
         yval = bar.get_height()
         plt.text(bar.get_x() + bar.get_width()/2.0, yval, f'{yval:.2f}с', va='bottom', ha='center', fontsize=8)
 
-
-    
     plt.subplot(2, 1, 2)
-    
     conf_df = plot_df[plot_df['confidence'].notna()]
-
-    if not conf_df.empty: 
+    if not conf_df.empty:
         bars_conf = plt.bar(conf_df.index, conf_df['confidence'] * 100, color='lightgreen')
         for bar in bars_conf:
             yval = bar.get_height()
             plt.text(bar.get_x() + bar.get_width()/2.0, yval, f'{yval:.1f}%', va='bottom', ha='center', fontsize=8)
     else:
-         
-         plt.text(0.5, 0.5, 'Нет данных о достоверности для отображаемых событий.',
+        plt.text(0.5, 0.5, 'Нет данных о достоверности для отображаемых событий.',
                  horizontalalignment='center', verticalalignment='center', transform=plt.gca().transAxes,
                  fontsize=10, color='orange')
 
-    plt.title('Достоверность распознавания лица (%) - Исключая первое событие')
+    plt.title('Достоверность распознавания лица (%)')
     plt.ylabel('Достоверность (%)')
     plt.ylim(0, 105)
-    
-    plt.xticks(ticks=plot_df.index, labels=plot_df['event_id'], rotation=75, ha='right', fontsize=8)
+    plt.xticks(ticks=plot_df.index, labels=x_labels, rotation=75, ha='right', fontsize=8)
     plt.grid(axis='y', linestyle='--', alpha=0.7)
 
-
-    plt.suptitle('Отчет о производительности распознавания лиц (Исключая первое событие)', fontsize=16)
+    plt.suptitle('Отчет о производительности распознавания лиц', fontsize=16)
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.savefig(output_path)
     plt.close()
 
-    print(f"Performance visualization (excluding first event) saved to: {output_path}")
+    print(f"Performance visualization saved to: {output_path}")
     return output_path
 
 
@@ -291,7 +267,7 @@ def visualize_recognition_process(image_path, recognition_results, output_path):
             
             pass 
 
-        plot_title = f'Recognition Results: {os.path.basename(image_path)}'
+        plot_title = f'Результаты распознавания: {os.path.basename(image_path)}'
         recognized_names = []
 
         for face_data in recognition_results:
@@ -332,9 +308,9 @@ def visualize_recognition_process(image_path, recognition_results, output_path):
 
         
         if recognized_names:
-            plot_title = f'Recognized: {", ".join(sorted(list(set(recognized_names))))}'
+            plot_title = f'Распознано: {", ".join(sorted(list(set(recognized_names))))}'
         elif recognition_results: 
-             plot_title = f'Detected: {len(recognition_results)} face(s) (Unknown/Error)'
+             plot_title = f'Обнаружено: {len(recognition_results)} лицо(а) (Неизвестно/Ошибка)'
 
 
         
@@ -343,7 +319,7 @@ def visualize_recognition_process(image_path, recognition_results, output_path):
         
         plt.subplot(1, 2, 1)
         plt.imshow(img_rgb) 
-        plt.title('Original Image')
+        plt.title('Оригинальное изображение')
         plt.axis('off')
 
         
@@ -353,7 +329,7 @@ def visualize_recognition_process(image_path, recognition_results, output_path):
         plt.title(plot_title)
         plt.axis('off')
 
-        plt.suptitle(f'Recognition Detail for {os.path.basename(image_path)}', fontsize=14)
+        plt.suptitle('Детали распознавания для {os.path.basename(image_path)}', fontsize=14)
         plt.tight_layout(rect=[0, 0.03, 1, 0.95]) 
         plt.savefig(output_path)
         plt.close()
